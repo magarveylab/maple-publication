@@ -50,13 +50,13 @@ The preprocessing pipeline consists of the following steps:
 from Maple.PeakPicker.MSAnalysis import MSAnalysis
 import json
 
-mzxml_fp = "sample_data/103350.mzXML"
+mzxml_fp = "sample_data/20109_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C12_1.mzXML"
 analysis = MSAnalysis(mzxml_fp)
 # disable predict_formulas (for faster preprocessing)
 analysis.run_complete_process(predict_formulas=False)
 
 out = analysis.MASTERbook
-json.dump(out, open("sample_output/103350.json", "w"))
+json.dump(out, open("sample_output/20109_peaks.json", "w"))
 ```
 
 Run the following command to predict molecular formulas independently.
@@ -76,4 +76,24 @@ query_peaks = [
 formula_analysis = FormulaAnalysis(query_peaks, cores=10)
 out = formula_analysis.get_predictions()
 json.dump(out, open("sample_output/example_formula_predictions.json", "w"))
+```
+
+### Processing Isotope Feeding Studies
+
+MAPLE includes inference functions for analyzing isotope feeding experiments by comparing control and labeled samples. It detects changes in isotopic distributions and identifies mass shifts in MS<sup>2</sup> fragmentation data. C<sup>12</sup> mzXML files must first be processed using the peak picking module.
+
+```python
+from Maple.FeedingAnalysis.FeedingAnalysis import feeding_analysis
+import json
+
+c12_peaks_fp = "sample_output/20109_peaks.json
+c13_mzxml_fp = "sample_data/20111_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C13_1.mzXML"
+
+out = feeding_analysis(
+    mzXML_fp=c13_mzxml_fp,
+    query_peaks=json.load(open(peaks_fp)),
+)
+
+json.dump(out, open("sample_output/20111_feeding_results.json", "w"))
+
 ```
