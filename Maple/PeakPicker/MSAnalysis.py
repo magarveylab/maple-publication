@@ -3,6 +3,7 @@ from multiprocessing import Pool
 import networkx as nx
 import numpy as np
 from pyopenms import *
+from pyopenms import MSExperiment, MzXMLFile
 from tqdm import tqdm
 
 from Maple.PeakPicker.AdductAnalysis import AdductAnalysis
