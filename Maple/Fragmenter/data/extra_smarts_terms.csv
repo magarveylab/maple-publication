@@ -1,0 +1,8 @@
+term,description,smarts
+ON,oxygen or nitrogen,"$([#8,#7])"
+N,nucleophile,"!$([#6,OX1,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])"
+HA,hydrogen acceptor,"!$([#6,F,Cl,Br,I,o,s,nX3,#7v5,#15v5,#16v4,#16v6,*+1,*+2,*+3])"
+SD,single or double bond,"-,="
+AD,aromatic or double bond,":,="
+SA,single or aromatic bond,"-,:"
+SAD,single or aromatic or double bond,"-,=,:"
