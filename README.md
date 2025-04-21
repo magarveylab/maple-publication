@@ -113,7 +113,7 @@ skew = iso_dist_skewness(isotopic_distribution)
 
 ```
 
-Run the following code to assess significant labeled isotope incorporation, using the Dixon Q test to determine whether C<sup>13</sup> skewness is a statistical outlier.
+Run the following code to assess significant labeled isotope incorporation, using the Dixon Q test to determine whether <sup>13</sup>C skewness is a statistical outlier.
 
 ```python
 from Maple.FeedingAnalysis.Stats import does_peak_shift
