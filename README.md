@@ -59,7 +59,7 @@ out = analysis.MASTERbook
 json.dump(out, open("sample_output/20109_peaks.json", "w"))
 ```
 
-Run the following command to predict molecular formulas independently.
+Run the following code to predict molecular formulas independently.
 ```python
 from Maple.PeakPicker.FormulaAnalysis import FormulaAnalysis
 import json
@@ -80,7 +80,7 @@ json.dump(out, open("sample_output/example_formula_predictions.json", "w"))
 
 ### Processing Isotope Feeding Studies
 
-MAPLE includes inference functions for analyzing isotope feeding experiments by comparing control and labeled samples. It detects changes in isotopic distributions and identifies mass shifts in MS<sup>2</sup> fragmentation data. C<sup>12</sup> mzXML files must first be processed using the peak picking module.
+MAPLE includes inference functions for analyzing isotope feeding experiments by comparing control and labeled samples. It detects changes in isotopic distributions (measured using skewness) and identifies mass shifts in MS<sup>2</sup> fragmentation data. C<sup>12</sup> mzXML files must first be processed using the peak picking module.
 
 ```python
 from Maple.FeedingAnalysis.FeedingAnalysis import feeding_analysis
@@ -95,5 +95,31 @@ out = feeding_analysis(
 )
 
 json.dump(out, open("sample_output/20111_feeding_results.json", "w"))
+```
 
+Run the following code to calculate the skewness of an isotopic distribution
+```python
+from Maple.FeedingAnalysis.Spectra import iso_dist_skewness
+
+# format -> [relative_intensity, monoisotopic_mass]
+isotopic_distribution =[
+    [1, 937.684],
+    [0.558, 938.687],
+    [0.188, 939.689],
+    [0.046, 940.694],
+    [0.009, 941.694]
+]
+skew = iso_dist_skewness(isotopic_distribution)
+
+```
+
+Run the following code to assess significant labeled isotope incorporation, using the Dixon Q test to determine whether C<sup>13</sup> skewness is a statistical outlier.
+
+```python
+from Maple.FeedingAnalysis.Stats import does_peak_shift
+
+c12_skew_values = [0.3098, 0.2913, 0.273, 0.2825, 0.2695, 0.2822, 0.2668]
+c13_skew_value = 0.1537
+
+does_peak_shift(c12_skew_values, c13_skew_value, alpha=0.01)
 ```
