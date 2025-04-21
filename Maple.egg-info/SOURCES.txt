@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-setup.py
-Maple.egg-info/PKG-INFO
-Maple.egg-info/SOURCES.txt
-Maple.egg-info/dependency_links.txt
-Maple.egg-info/top_level.txt

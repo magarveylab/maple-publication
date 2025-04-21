@@ -3,8 +3,8 @@ import os
 from operator import itemgetter
 from os.path import abspath, join
 
-import joblib
 import numpy as np
+from sklearn.externals import joblib
 
 # load models and confidence intervals
 curdir = abspath(os.path.dirname(__file__))

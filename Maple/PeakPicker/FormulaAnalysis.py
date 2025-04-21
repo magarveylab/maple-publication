@@ -198,7 +198,7 @@ def formula_finder(peak, ppm_tol=5, ips=50, t=0.1):
     return {peak_id: final_formulas}
 
 
-class FormulaWizard:
+class FormulaAnalysis:
 
     def __init__(self, peaks, ppm_tol=5, ips=50, t=0.1, cores=10):
         """

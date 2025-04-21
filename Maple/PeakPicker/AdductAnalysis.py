@@ -311,7 +311,7 @@ class AdductNetwork:
         return adduct_type, adduct_cluster_id, monoisotopic_mass, base_adduct
 
 
-class Adductwizard:
+class AdductAnalysis:
 
     def __init__(
         self,

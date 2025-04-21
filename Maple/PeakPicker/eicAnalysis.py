@@ -8,7 +8,7 @@ from Maple.PeakPicker.utils import (
 )
 
 
-class eicWizard:
+class eicAnalysis:
 
     def __init__(self, scan_trace, eic_ppm_tol=10, eic_scan_count_cutoff=5):
         self.scan_trace = scan_trace
