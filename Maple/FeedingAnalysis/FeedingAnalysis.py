@@ -1,8 +1,5 @@
-from typing import List
-
 from tqdm import tqdm
 
-from Maple.FeedingAnalysis.DataStructs import MS1PeakQuery
 from Maple.FeedingAnalysis.Spectra import (
     MSspectra,
     dereplicate_ms1,
@@ -13,7 +10,7 @@ from Maple.FeedingAnalysis.Spectra import (
 
 def feeding_analysis(
     mzXML_fp: str,
-    query_peaks: List[MS1PeakQuery],
+    query_peaks: list,  # from peak picker output
     ppm_tol: int = 10,
     rt_tol: int = 15,
     min_isotopes: int = 3,
@@ -24,7 +21,7 @@ def feeding_analysis(
     # calculate base skewness for each peak
     query_dict = {}
     for peak in query_peaks:
-        query_dict[peak["ms1_peak_id"]] = peak["isotopic_distribution"]
+        query_dict[peak["peak_id"]] = peak["isotopic_distribution"]
     # filter queries
     query_peaks_filtered = dereplicate_ms1(
         peaks=query_peaks, ppm_tol=ppm_tol, rt_tol=rt_tol
@@ -64,7 +61,7 @@ def feeding_analysis(
                 # limit isotopic skewness to 3
                 query_skew = iso_dist_skewness(query_dict[query_peak_id][:3])
                 overlap_peaks.append(
-                    {"ms1_peak_id": query_peak_id, "skew": query_skew}
+                    {"peak_id": query_peak_id, "skew": query_skew}
                 )
                 target_peak["overlap_peaks"] = overlap_peaks
             out.append(target_peak)

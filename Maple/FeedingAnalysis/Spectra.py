@@ -1,5 +1,5 @@
 import itertools as it
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 
 import networkx as nx
 import numpy as np
@@ -9,11 +9,6 @@ from pyopenms import MSExperiment, MzXMLFile
 from scipy.stats import skew
 from tqdm import tqdm
 
-from Maple.FeedingAnalysis.DataStructs import (
-    MS1PeakQuery,
-    MS1PeakTarget,
-    MS2ion,
-)
 from Maple.PeakPicker.utils import calc_ppm, ppm_lower_end, ppm_upper_end
 
 isotope_mass_delta = 1.00335
@@ -36,11 +31,9 @@ def normalize_iso_dist(
     return iso_dist
 
 
-def dereplicate_ms1(
-    peaks: List[MS1PeakQuery], ppm_tol: int = 10, rt_tol: int = 15
-) -> List[MS1PeakQuery]:
+def dereplicate_ms1(peaks: list, ppm_tol: int = 10, rt_tol: int = 15):
     # lookup
-    peak_dict = {p["ms1_peak_id"]: p for p in peaks}
+    peak_dict = {p["peak_id"]: p for p in peaks}
     # sort ms1 peaks by rt and mass for fast query
     G = nx.Graph()
     G.add_nodes_from(peak_dict.keys())
@@ -51,7 +44,7 @@ def dereplicate_ms1(
                 break
             if calc_ppm(p1["mz"], p2["mz"]) > ppm_tol:
                 break
-            G.add_edge(p1["ms1_peak_id"], p2["ms1_peak_id"])
+            G.add_edge(p1["peak_id"], p2["peak_id"])
     groups = nx.connected_components(G)
     # chose peak with most isotopes
     filtered_ms1 = []
@@ -60,7 +53,7 @@ def dereplicate_ms1(
             peak_ids,
             key=lambda x: (
                 len(peak_dict[x]["isotopic_distribution"]),
-                peak_dict[x]["intensity_raw"],
+                peak_dict[x]["intensity"],
             ),
         )
         best_peak = peak_dict[best_peak_id]
@@ -69,9 +62,7 @@ def dereplicate_ms1(
     return filtered_ms1
 
 
-def dereplicate_ms2(
-    ms2_ions: List[MS2ion], threshold: float = 0.05, top_n: int = 50
-) -> List[MS2ion]:
+def dereplicate_ms2(ms2_ions: list, threshold: float = 0.05, top_n: int = 50):
     # lookup
     ms2_dict = {i["mz"]: i["intensity"] for i in ms2_ions}
     # group ms2 ions by mass
@@ -185,11 +176,11 @@ class MSspectra:
 
     def find_ms1(
         self,
-        query_peak: MS1PeakQuery,
+        query_peak: dict,
         ppm_tol: int = 10,
         rt_tol: int = 15,
         min_isotopes: int = 2,
-    ) -> Optional[MS1PeakTarget]:
+    ):
         min_rt = query_peak["rt"] - rt_tol
         max_rt = query_peak["rt"] + rt_tol
         rt_filtered = quick_search(self.scan_array, 1, max_rt, min_rt)
@@ -252,12 +243,12 @@ class MSspectra:
 
     def find_ms2(
         self,
-        query_peak: MS1PeakQuery,
+        query_peak: dict,
         ppm_tol: int = 10,
         rt_tol: int = 15,
         scan_isotopes: bool = False,
         ms2_limit: int = 50,
-    ) -> List[MS2ion]:
+    ):
         # append ms2 data for target peak
         min_rt = query_peak["rt"] - rt_tol
         max_rt = query_peak["rt"] + rt_tol
