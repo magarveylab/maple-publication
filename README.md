@@ -65,12 +65,12 @@ from Maple.PeakPicker.FormulaAnalysis import FormulaAnalysis
 import json
 
 query_peaks = [
-    {'peak_id': 31365361,
-     'mass': 283.084,
-     'charge': 1,
-     'adduct_type': '2MpH',
-     'iso_mz': [567.1758, 568.1783, 569.1757, 570.1852],
-     'iso_intens': [1, 0.324, 0.112, 0.039]}
+    {"peak_id": 31365361,
+     "mass": 283.084,
+     "charge": 1,
+     "adduct_type": "2MpH",
+     "iso_mz": [567.1758, 568.1783, 569.1757, 570.1852],
+     "iso_intens": [1, 0.324, 0.112, 0.039]}
 ]
 
 formula_analysis = FormulaAnalysis(query_peaks, cores=10)
@@ -78,7 +78,7 @@ out = formula_analysis.get_predictions()
 json.dump(out, open("sample_output/example_formula_predictions.json", "w"))
 ```
 
-### Processing Isotope Feeding Studies
+### Analyzing Isotope Feeding Studies
 
 MAPLE includes inference functions for analyzing isotope feeding experiments by comparing control and labeled samples. It detects changes in isotopic distributions (measured using skewness) and identifies mass shifts in MS<sup>2</sup> fragmentation data. C<sup>12</sup> mzXML files must first be processed using the peak picking module.
 
@@ -124,7 +124,7 @@ c13_skew_value = 0.1537
 does_peak_shift(c12_skew_values, c13_skew_value, alpha=0.01)
 ```
 
-### _In Silico_ MS<sup>2</sup> Fragmentation
+### _In Silico_ MS<sup>2</sup> Fragmentation Prediction
 MAPLE computes theoretical fragmentation trees using a curated set of chemical reactions derived from [literature](https://pubs.rsc.org/en/content/articlelanding/2016/np/c5np00073d). The current implementation supports positive ion mode only.
 ```python
 from Maple.Fragmenter.Fragmenter import compute_fragments
@@ -134,8 +134,28 @@ smiles = 'CNC[C@H](O)C1=CC=C(O)C(O)=C1'
 # cores correspond to the number of cpus to use
 output = compute_fragments(smiles, max_rounds=6, cores=1)
 out =  {
-    "nodes": output["nodes"].to_dict('records'),
-    "edges": output["edges"].to_dict('records'),
+    "nodes": output["nodes"].to_dict("records"),
+    "edges": output["edges"].to_dict("records"),
 }
-json.dump(out, open('sample_output/example_insilico_fragmentation.json', 'w'))
+json.dump(out, open("sample_output/example_insilico_fragmentation.json", "w"))
+```
+
+### Embedding MS<sup>1</sup> Signals
+MAPLE generates embeddings that capture contextual relationships between co-eluting metabolites, enabling the construction of MS<sup>1</sup>-level similarity networks. These networks can be used to assess metabolomic uniqueness across taxa and prioritize lineage-specific chemical signatures.
+
+Run the following code to compute a global spectral embedding and individual MS<sup>1</sup> embeddings for a given mzXML file. Note: mzXML files must first be processed using the peak picking module.
+
+```python
+from Maple.Embedder.inference.MS1Pipeline import MS1Pipeline
+import json
+import pickle
+
+peaks_fp = "sample_output/20109_peaks.json"
+
+pipe = MS1Pipeline(gpu_id=0)
+out = pipe.embed_ms1_spectra_from(
+    mzml_id=20109,
+    ms1_peaks=json.load(open(peaks_fp))
+)
+pickle.dump(out, open("sample_output/example_MS1Former_output.pkl", "wb"))
 ```

@@ -13,7 +13,7 @@ from Maple.Embedder.graphs.HeteroGraph import HeteroGraph
 
 
 class MS1Peak(TypedDict):
-    ms1_peak_id: int
+    peak_id: int
     mz: float
     charge: int
     rt: float  # in serconds
@@ -245,7 +245,7 @@ class MS1Graph(HeteroGraph):
                 ]
                 label = " ".join(label)
                 peak_node_id = G.add_node(node_type="Peak", label=label)
-                ms1_traceback[peak_node_id] = peak["ms1_peak_id"]
+                ms1_traceback[peak_node_id] = int(peak["peak_id"])
                 # add edges to RT
                 if peak["min_rt_bin"] in rt_traceback:
                     G.add_edge(
