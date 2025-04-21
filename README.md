@@ -123,3 +123,19 @@ c13_skew_value = 0.1537
 
 does_peak_shift(c12_skew_values, c13_skew_value, alpha=0.01)
 ```
+
+### _In Silico_ MS<sup>2</sup> Fragmentation
+MAPLE computes theoretical fragmentation trees using a curated set of chemical reactions derived from [literature](https://pubs.rsc.org/en/content/articlelanding/2016/np/c5np00073d). The current implementation supports positive ion mode only.
+```python
+from Maple.Fragmenter.Fragmenter import compute_fragments
+import json
+
+smiles = 'CNC[C@H](O)C1=CC=C(O)C(O)=C1'
+# cores correspond to the number of cpus to use
+output = compute_fragments(smiles, max_rounds=6, cores=1)
+out =  {
+    "nodes": output["nodes"].to_dict('records'),
+    "edges": output["edges"].to_dict('records'),
+}
+json.dump(out, open('sample_output/example_insilico_fragmentation.json', 'w'))
+```
