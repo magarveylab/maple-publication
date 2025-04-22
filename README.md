@@ -37,7 +37,7 @@ The preprocessing pipeline consists of the following steps:
 ```python
 from Maple.PeakPicker import run_peak_picker
 
-analysis = run_peak_picker(
+run_peak_picker(
     mzXML_fp="sample_data/20109_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C12_1.mzXML",
     output_fp="sample_output/20109_peaks.json"
 )
@@ -80,17 +80,11 @@ run_feeding_analysis(
 
 Run the following code to calculate the skewness of an isotopic distribution
 ```python
-from Maple.FeedingAnalysis import iso_dist_skewness
+from Maple.FeedingAnalysis import get_isot_dist_skewness
 
-# format -> [relative_intensity, monoisotopic_mass]
-isotopic_distribution =[
-    [1, 937.684],
-    [0.558, 938.687],
-    [0.188, 939.689],
-    [0.046, 940.694],
-    [0.009, 941.694]
-]
-skew = iso_dist_skewness(isotopic_distribution)
+iso_mz = [937.684, 938.687, 939.689, 940.694, 941.694]
+iso_intens = [1, 0.558, 0.188, 0.046, 0.009]
+skew = iso_dist_skewness(iso_mz=iso_mz, iso_intens=iso_intens)
 
 ```
 
@@ -101,8 +95,7 @@ from Maple.FeedingAnalysis import does_peak_shift
 
 c12_skew_values = [0.3098, 0.2913, 0.273, 0.2825, 0.2695, 0.2822, 0.2668]
 c13_skew_value = 0.1537
-
-does_peak_shift(c12_skew_values, c13_skew_value, alpha=0.01)
+result = does_peak_shift(c12_skew_values, c13_skew_value, alpha=0.01)
 ```
 
 ### _In Silico_ MS<sup>2</sup> Fragmentation Prediction
