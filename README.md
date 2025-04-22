@@ -39,7 +39,7 @@ MAPLE inference piplelines utilize [Qdrant](https://qdrant.tech/) embedding data
 The required Qdrant databases for inference are provided as QdrantSnapshots.zip in the accompanying [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.15226521)
 
 ### Restoring Qdrant Databases
-To restore the Qdrant databases, ensure that the snapshot files (unzipped) are placed here and run the following command.
+To restore the Qdrant databases, ensure that the snapshot files (unzipped) are placed [here](https://github.com/magarveylab/maple-publication/tree/main/Maple/Embedder/QdrantSnapshots) and run the following command.
 ```
 conda activate MapleEmbedder2
 python restore_qdrant.py
