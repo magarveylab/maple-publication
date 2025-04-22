@@ -1,7 +1,35 @@
-import pandas as pd
-
 from Maple.Fragmenter.FragmentNetwork import FragmentNetwork
 from Maple.Fragmenter.Logger import logging
+
+
+def reorganize_data(graph):
+    node_table = []
+    edge_table = []
+    # organize nodes
+    for n in graph.nodes:
+        charged = graph.nodes[n]["charged"]
+        rxn_type = graph.nodes[n]["rxn_type"]
+        node_table.append(
+            {
+                "hash_id": charged.hash_id,
+                "smiles": charged.smiles,
+                "mass": charged.mass,
+                "formula": charged.formula,
+                "rxn_type": rxn_type,
+            }
+        )
+    # organize edges
+    for n1, n2, e_attr in graph.edges(data=True):
+        neutral_loss = ".".join([m.smiles for m in e_attr["neutral"]])
+        edge_table.append(
+            {
+                "n1": n1,
+                "n2": n2,
+                "rxn_id": e_attr["rxn_id"],
+                "neutral_loss": neutral_loss,
+            }
+        )
+    return {"nodes": node_table, "edges": edge_table}
 
 
 def compute_fragments(
@@ -51,38 +79,5 @@ def compute_fragments(
         round_id += 1
 
     # tabulate data
-    output = tabulate_graphs(fragment_network.graph)
+    output = reorganize_data(fragment_network.graph)
     return output
-
-
-def tabulate_graphs(graph):
-    node_table = []
-    edge_table = []
-    # organize nodes
-    for n in graph.nodes:
-        charged = graph.nodes[n]["charged"]
-        rxn_type = graph.nodes[n]["rxn_type"]
-        node_table.append(
-            {
-                "hash_id": charged.hash_id,
-                "smiles": charged.smiles,
-                "mass": charged.mass,
-                "formula": charged.formula,
-                "rxn_type": rxn_type,
-            }
-        )
-    # organize edges
-    for n1, n2, e_attr in graph.edges(data=True):
-        neutral_loss = ".".join([m.smiles for m in e_attr["neutral"]])
-        edge_table.append(
-            {
-                "n1": n1,
-                "n2": n2,
-                "rxn_id": e_attr["rxn_id"],
-                "neutral_loss": neutral_loss,
-            }
-        )
-    # cast as dataframes
-    node_table = pd.DataFrame(node_table)
-    edge_table = pd.DataFrame(edge_table)
-    return {"nodes": node_table, "edges": edge_table}

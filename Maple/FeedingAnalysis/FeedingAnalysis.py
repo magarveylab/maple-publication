@@ -9,7 +9,7 @@ from Maple.FeedingAnalysis.Spectra import (
 
 
 def feeding_analysis(
-    mzXML_fp: str,
+    c13_mzXML_fp: str,
     query_peaks: list,  # from peak picker output
     ppm_tol: int = 10,
     rt_tol: int = 15,
@@ -17,7 +17,7 @@ def feeding_analysis(
     ms2_limit: int = 50,
 ):
     # load C13 spectra
-    spectra = MSspectra(mzXML_fp)
+    spectra = MSspectra(c13_mzXML_fp)
     # calculate base skewness for each peak
     query_dict = {}
     for peak in query_peaks:

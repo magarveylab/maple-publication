@@ -25,7 +25,7 @@ class MSAnalysis:
     # Initialization
     ########################################################################
 
-    def __init__(self, mzXML_fp):
+    def __init__(self, mzXML_fp: str):
         # load arguments
         self.mzXML_fp = mzXML_fp
         # set up documents

@@ -75,10 +75,10 @@ class MS1Pipeline:
             "peak_embeddings": peak_embeddings,
         }
 
-    def embed_ms1_spectra_from(self, mzml_id: str, ms1_peaks: List[MS1Peak]):
+    def embed_ms1_spectra_from(self, ms1_peaks: List[MS1Peak]):
         # compute graph slices
         graph_slices = MS1Graph.build_from_ms1_spectra(
-            mzml_id=mzml_id, ms1_peaks=ms1_peaks, store_traceback=True
+            mzml_id=0, ms1_peaks=ms1_peaks, store_traceback=True
         )
         # embed each graph slice
         out = [self(G) for G in graph_slices]
@@ -98,7 +98,6 @@ class MS1Pipeline:
                 all_peak_embeddings[peak_id], axis=0
             )
         return {
-            "mzml_id": mzml_id,
             "spectra_embedding": spectra_embedding,
             "peak_embeddings": all_peak_embeddings,
         }

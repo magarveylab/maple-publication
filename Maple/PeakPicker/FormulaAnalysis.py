@@ -235,8 +235,3 @@ class FormulaAnalysis:
         for p in tqdm(self.peaks):
             r = formula_finder(p, ppm_tol=self.ppm_tol, ips=self.ips, t=self.t)
             self.predictions.update(r)
-
-    def get_predictions(self):
-        self.predict_elemental_ratios()
-        self.predict_formulas()
-        return self.predictions
