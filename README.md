@@ -191,7 +191,7 @@ annotate_mzXML_with_chemotypes(
     output_fp="sample_output/20109_MS2Former_chemotype_predictions.csv",
 )
 ```
-Run the following command to perform density-based MS<sup>2</sup> embedding clustering across multiple mzXML files. The method supports comparison of millions of peaks simultaneously. For optimal performance, we recommend tuning the clustering parameters (`min_cluster_size` and `n_neighbors`). Default parameters used in the study are provided.
+Run the following code to perform density-based MS<sup>2</sup> clustering across multiple mzXML files. The method supports comparison of millions of peaks simultaneously. For optimal performance, we recommend tuning the clustering parameters (`min_cluster_size` and `n_neighbors`). Default parameters used in the study are provided.
 ```python
 
 from Maple.Embedder import compute_ms2_networks_from_mzXMLs
