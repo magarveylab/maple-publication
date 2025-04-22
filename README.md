@@ -159,3 +159,6 @@ out = pipe.embed_ms1_spectra_from(
 )
 pickle.dump(out, open("sample_output/example_MS1Former_output.pkl", "wb"))
 ```
+
+After generating MS<sup>1</sup> embeddings, run the following command to compute taxonomy consistency scores. Query Taxonomic labels must correspond to the naming conventions provided in the following [reference tables](https://github.com/magarveylab/maple-publication/tree/main/Maple/Embedder/dat/taxonomy_tables).
+

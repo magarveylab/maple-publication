@@ -16,13 +16,6 @@ class ms1PeakQuery(TypedDict):
     adduct_type: str
 
 
-class ms2PeakQuery(TypedDict):
-    peak_id: str
-    embedding: np.array
-    tax_level: str
-    tax_id: int
-
-
 def ppm_upper_end(M, ppm):
     return M * (2000000 + ppm) / (2000000 - ppm)
 

@@ -5,7 +5,7 @@ import pandas as pd
 from Maple.Embedder import curdir
 
 
-class TaxKNNOutput(TypedDict):
+class TaxSearchOutput(TypedDict):
     peak_id: int
     strain_id: int
     distance: float
@@ -24,7 +24,7 @@ def load_strain_to_tax_lookups():
 
 
 def load_tax_lookup(tax_level: str):
-    df = pd.read_csv(f"{curdir}/dat/{tax_level}.csv")
+    df = pd.read_csv(f"{curdir}/dat/taxonomy_tables/{tax_level}.csv")
     tax_lookup = dict(zip(df.name, df.taxonomy_id))
     return tax_lookup
 
@@ -37,8 +37,8 @@ family_lookup = load_tax_lookup("family")
 genus_lookup = load_tax_lookup("genus")
 
 
-def get_tax_score_from_knn_result(
-    knn_result: List[TaxKNNOutput],
+def get_tax_score_from_search_result(
+    search_result: List[TaxSearchOutput],
     query_phylum: Optional[str] = None,
     query_class: Optional[str] = None,
     query_order: Optional[str] = None,
@@ -54,10 +54,10 @@ def get_tax_score_from_knn_result(
         "family": family_lookup.get(query_family),
         "genus": genus_lookup.get(query_genus),
     }
-    # sort knn (by distance and base it of top n similar peaks)
-    knn_result = sorted(knn_result, key=lambda x: x["distance"])[:top_n]
+    # sort search (by distance and base it of top n similar peaks)
+    search_result = sorted(search_result, key=lambda x: x["distance"])[:top_n]
     # convert to unique strain ids
-    unique_strain_ids = set(r["strain_id"] for r in knn_result)
+    unique_strain_ids = set(r["strain_id"] for r in search_result)
     # trace to orgnaisms at different levels and output homology scores
     tax_levels = ["phylum", "class", "order", "family", "genus"]
     for t in tax_levels:
