@@ -66,7 +66,7 @@ run_formula_predictor(
 
 ### Analyzing Isotope Feeding Studies
 
-MAPLE includes inference functions for analyzing isotope feeding experiments by comparing control and labeled samples. It detects changes in isotopic distributions (measured using skewness) and identifies mass shifts in MS<sup>2</sup> fragmentation data. C<sup>12</sup> mzXML files must first be processed using the peak picking module.
+MAPLE includes inference functions for analyzing isotope feeding experiments by comparing control and labeled samples. It detects changes in isotopic distributions (measured using skewness) and identifies mass shifts in MS<sup>2</sup> fragmentation data. <sup>12</sup>C mzXML files must first be processed using the peak picking module.
 
 ```python
 from Maple.FeedingAnalysis import run_feeding_analysis
@@ -142,4 +142,20 @@ annotate_mzxml_with_tax_scores(
 
 ### Embedding MS<sup>2</sup> Signals
 
-MAPLE generates two embeddings for fragmentation data. The chemotype embedding is optimized for ANN classification to determine biosynthetic class. The analog embedding is useful for density based clustering to determine derivatives (optimized for replicating molecular similarity within biosynthetic classes)
+MAPLE generates two MS<sup>2</sup> embeddings: the **chemotype embedding** for ANN-based biosynthetic class prediction, and the **analog embedding** for clustering structural derivatives within biosynthetic classes.
+
+```python
+from Maple.Embedder import run_MS2Former_on_mzXML
+
+run_MS2Former_on_mzXML(
+    peaks_fp="sample_output/20109_peaks.json", # input data
+    output_fp="sample_output/example_MS2Former_chemotype_output.pkl",
+    embedding_type="chemotype",
+)
+
+run_MS2Former_on_mzXML(
+    peaks_fp="sample_output/20109_peaks.json", # input data
+    output_fp="sample_output/example_MS2Former_analog_output.pkl",
+    embedding_type="analog",
+)
+```

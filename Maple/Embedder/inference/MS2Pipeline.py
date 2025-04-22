@@ -59,16 +59,16 @@ class MS2Pipeline:
         self,
         G: MS2Graph,
     ):
-        spectra_id = G.graph_id
+        peak_id = G.graph_id
         data = self.preprocess(G=G)
         embedding = self._forward(data=data)
-        return {"spectra_id": spectra_id, "embedding": embedding}
+        return {"peak_id": peak_id, "embedding": embedding}
 
     def embed_ms2_spectra_from(
-        self, spectra_id: str, ms2_spectra: List[MS2Ion], precursor_mz: float
+        self, peak_id: str, ms2_spectra: List[MS2Ion], precursor_mz: float
     ):
         G = MS2Graph.build_from_ms2_spectra(
-            spectra_id=spectra_id,
+            spectra_id=peak_id,
             ms2_spectra=ms2_spectra,
             precursor_mz=precursor_mz,
         )

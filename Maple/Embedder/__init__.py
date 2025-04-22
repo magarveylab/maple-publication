@@ -1,10 +1,11 @@
 import json
 import os
 import pickle
-from typing import Optional
+from typing import Literal, Optional
 
 import pandas as pd
 from dotenv import load_dotenv
+from tqdm import tqdm
 
 curdir = os.path.abspath(os.path.dirname(__file__))
 dotenv_path = os.path.join(curdir, ".env")
@@ -13,10 +14,10 @@ load_dotenv(dotenv_path)
 # inference functions
 
 
-def run_MS1Former_on_mzXML(peaks_fp: str, output_fp: str):
+def run_MS1Former_on_mzXML(peaks_fp: str, output_fp: str, gpu_id: int = 0):
     from Maple.Embedder.inference.MS1Pipeline import MS1Pipeline
 
-    pipe = MS1Pipeline(gpu_id=0)
+    pipe = MS1Pipeline(gpu_id=gpu_id)
     ms1_peaks = json.load(open(peaks_fp))
     out = pipe.embed_ms1_spectra_from(ms1_peaks=ms1_peaks)
     pickle.dump(out, open(output_fp, "wb"))
@@ -77,3 +78,43 @@ def annotate_mzXML_with_tax_scores(
         }
         out.append(r)
     pd.DataFrame(out).to_csv(output_fp, index=False)
+
+
+def run_MS2Former_on_mzXML(
+    peaks_fp: str,
+    output_fp: str,
+    embedding_type: str = Literal["chemotype", "analog"],
+    gpu_id: int = 0,
+    min_ms2: int = 5,
+):
+    from Maple.Embedder.inference.MS2Pipeline import (
+        AnalogMS2Pipeline,
+        ChemotypeMS2Pipeline,
+    )
+
+    # load appropriate ingerence pipeline
+    if embedding_type == "chemotype":
+        pipe = ChemotypeMS2Pipeline(gpu_id=gpu_id)
+    elif embedding_type == "analog":
+        pipe = AnalogMS2Pipeline(gpu_id=gpu_id)
+    else:
+        raise ValueError(
+            f"embedding_type must be one of ['chemotype', 'analog'], got {embedding_type}"
+        )
+    # load peaks
+    peaks = json.load(open(peaks_fp, "r"))
+    # reformat input data
+    input_data = []
+    for p in peaks:
+        if len(p["ms2"]) >= min_ms2:
+            input_data.append(
+                {
+                    "peak_id": int(p["peak_id"]),
+                    "precursor_mz": p["mz"],
+                    "ms2_spectra": p["ms2"],
+                }
+            )
+    # get embeddings
+    out = [pipe.embed_ms2_spectra_from(**p) for p in tqdm(input_data)]
+    # save output
+    pickle.dump(out, open(output_fp, "wb"))
