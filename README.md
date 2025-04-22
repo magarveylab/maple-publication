@@ -119,7 +119,8 @@ from Maple.Embedder import run_MS1Former
 
 run_MS1Former_on_mzXML(
     peaks_fp="sample_output/20109_peaks.json", # input data
-    output_fp="sample_output/example_MS1Former_output.pkl"
+    output_fp="sample_output/example_MS1Former_output.pkl",
+    gpu_id=0
 )
 ```
 
@@ -151,11 +152,31 @@ run_MS2Former_on_mzXML(
     peaks_fp="sample_output/20109_peaks.json", # input data
     output_fp="sample_output/example_MS2Former_chemotype_output.pkl",
     embedding_type="chemotype",
+    gpu_id=0,
+    min_ms2=5,
 )
 
 run_MS2Former_on_mzXML(
     peaks_fp="sample_output/20109_peaks.json", # input data
     output_fp="sample_output/example_MS2Former_analog_output.pkl",
     embedding_type="analog",
+    gpu_id=0,
+    min_ms2=5,
+)
+```
+Run the following code to perform ANN-based biosynthetic class prediction.
+```python
+from Maple.Embedder import annotate_mzXML_with_chemotypes
+
+# Directly from peak data (includes embedding generation)
+annotate_mzXML_with_chemotypes(
+    peaks_fp="sample_output/20109_peaks.json", # input data
+    output_fp="sample_output/example_MS2Former_chemotypes.csv",
+)
+
+# From precomputed embeddings
+annotate_mzXML_with_chemotypes(
+    ms2_emb_fp="sample_output/example_MS2Former_chemotype_output.pkl", # input data
+    output_fp="sample_output/example_MS2Former_chemotypes.csv",
 )
 ```

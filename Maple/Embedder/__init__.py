@@ -82,7 +82,7 @@ def annotate_mzXML_with_tax_scores(
 
 def run_MS2Former_on_mzXML(
     peaks_fp: str,
-    output_fp: str,
+    output_fp: Optional[str] = None,
     embedding_type: str = Literal["chemotype", "analog"],
     gpu_id: int = 0,
     min_ms2: int = 5,
@@ -117,4 +117,46 @@ def run_MS2Former_on_mzXML(
     # get embeddings
     out = [pipe.embed_ms2_spectra_from(**p) for p in tqdm(input_data)]
     # save output
-    pickle.dump(out, open(output_fp, "wb"))
+    if output_fp is None:
+        return out
+    else:
+        pickle.dump(out, open(output_fp, "wb"))
+
+
+def annotate_mzXML_with_chemotypes(
+    peaks_fp: Optional[str] = None,
+    ms2_emb_fp: Optional[str] = None,
+    output_fp: Optional[str] = None,
+    gpu_id: int = 0,
+    min_ms2: int = 5,
+):
+    from Maple.Embedder.Qdrant.Classification import (
+        ms2_chemotype_classification,
+    )
+
+    if peaks_fp is not None:
+        emb_result = run_MS2Former_on_mzXML(
+            peaks_fp=peaks_fp,
+            output_fp=None,
+            embedding_type="chemotype",
+            gpu_id=gpu_id,
+            min_ms2=min_ms2,
+        )
+    else:
+        emb_result = pickle.load(open(ms2_emb_fp, "rb"))
+    query_list = [
+        {"query_id": r["peak_id"], "embedding": r["embedding"]}
+        for r in emb_result
+    ]
+    result = ms2_chemotype_classification(query_list=query_list)
+    out = []
+    for peak_id, prop in result.items():
+        out.append(
+            {
+                "peak_id": peak_id,
+                "label": prop["label"],
+                "homology": prop["homology"],
+                "distance": prop["distance"],
+            }
+        )
+    pd.DataFrame(out).to_csv(output_fp, index=False)
