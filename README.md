@@ -17,19 +17,7 @@ Conda environment for peak picking (e.g., adduct analysis, molecular formula pre
     pip install -e .
 ```
 
-Conda environment for _in silico_ MS<sup>2</sup> fragmentation
-```
-    conda env create -f envs/MapleFragmenter.yml
-    conda activate MapleFragmenter
-    pip install -e .
-```
-
-Conda environment for embedding MS<sup>1</sup> and MS<sup>2</sup> data
-```
-    conda env create -f envs/MapleEmbedder.yml
-    conda activate MapleEmbedder
-    pip install -e .
-```
+Repeat the process to create the conda environments required for _in silico_ MS<sup>2</sup> fragmentation and for embedding MS<sup>1</sup>/MS<sup>2</sup> data using `envs/MapleFragmenter.yml` and `envs/MapleEmbedder.yml`, respectively.
 
 2. Set Up Qdrant
     - Install Qdrant and restore the Qdrant reference databases from the provided snapshots. Look under **Qdrant Setup** for more details.
@@ -145,27 +133,16 @@ run_MS1Former(
 After generating MS<sup>1</sup> embeddings, run the following command to compute taxonomy consistency scores. Query Taxonomic labels must correspond to the naming conventions provided in the following [reference tables](https://github.com/magarveylab/maple-publication/tree/main/Maple/Embedder/dat/taxonomy_tables). If a score returns None, it indicates that no overlapping signals were detected in the current LC–MS/MS database, and therefore a reliable score could not be computed. 
 
 ```python
-from Maple.Embedder.annotation.TaxScore import annotate_mzxml_with_tax_scores
-import json
+from Maple.Embedder import annotate_mzXML_with_tax_scores
 
-peaks_fp = 'sample_output/20109_peaks.json'
-ms1_emb_fp = 'sample_output/example_MS1Former_output.pkl'
-
-query_phylum = 'bacteroidetes'
-query_class = 'sphingobacteriia'
-query_order = 'sphingobacteriales'
-query_family = 'chitinophagaceae'
-query_genus = 'chitinophaga'
-
-out = annotate_mzxml_with_tax_scores(
-    peaks_fp=peaks_fp,
-    ms1_emb_fp=ms1_emb_fp,
-    query_phylum=query_phylum,
-    query_class=query_class,
-    query_order=query_order,
-    query_family=query_family,
-    query_genus=query_genus,
+annotate_mzxml_with_tax_scores(
+    peaks_fp="sample_output/20109_peaks.json",
+    ms1_emb_fp="sample_output/example_MS1Former_output.pkl",
+    output_fp="sample_output/example_MS1Former_taxscores.csv",
+    query_phylum="bacteroidetes",
+    query_class="sphingobacteriia",
+    query_order="sphingobacteriales",
+    query_family="chitinophagaceae",
+    query_genus="chitinophaga",
 )
-
-json.dump(out, open("sample_output/example_MS1Former_taxscores.json", "w"))
 ```
