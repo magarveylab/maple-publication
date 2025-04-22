@@ -45,6 +45,9 @@ conda activate MapleEmbedder2
 python restore_qdrant.py
 ```
 
+## Graphormer Training
+Training scripts for both MS1Former and MS2Former are [provided](https://github.com/magarveylab/maple-graphormer-training/tree/main) to support model development, pretraining, and task-specific fine-tuning.
+
 ## Inference
 
 ### Preprocessing Raw mzXML Files
