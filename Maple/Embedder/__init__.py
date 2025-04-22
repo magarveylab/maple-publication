@@ -3,6 +3,7 @@ import os
 import pickle
 from typing import List, Literal, Optional
 
+import numpy as np
 import pandas as pd
 from dotenv import load_dotenv
 from tqdm import tqdm
@@ -165,6 +166,8 @@ def annotate_mzXML_with_chemotypes(
 def compute_ms2_networks_from_mzXMLs(
     ms2_emb_fps: List[str],
     output_fp: str,
+    n_neighbors: int = 15,
+    min_cluster_size: int = 5,
 ):
     from Maple.Embedder.clustering.clustering import compute_clustering
 
@@ -177,10 +180,13 @@ def compute_ms2_networks_from_mzXMLs(
         for r in emb_result:
             keys.append({"source": source, "peak_id": r["peak_id"]})
             matrix.append(r["embedding"])
+    matrix = np.array(matrix)
     # density based clustering
     out = compute_clustering(
         matrix=matrix,
         matrix_keys=keys,
+        min_cluster_size=min_cluster_size,
+        n_neighbors=n_neighbors,
     )
     # remove -1 family id
     next_family_id = max([i["family_id"] for i in out]) + 1
