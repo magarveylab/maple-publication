@@ -33,6 +33,18 @@ Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
 2. Set Up Qdrant
     - Install Qdrant and restore the Qdrant reference databases from the provided snapshots. Look under **Qdrant Setup** for more details.
 
+## Qdrant Setup 
+MAPLE inference piplelines utilize [Qdrant](https://qdrant.tech/) embedding databases for approximate nearest neighbor (ANN) lookups. Since system configurations may vary, we recommend setting up Qdrant locally using a Docker container, following the [official documentation](https://qdrant.tech/documentation/quickstart/).
+
+The required Qdrant databases for inference are provided as QdrantSnapshots.zip in the accompanying [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.15226521)
+
+### Restoring Qdrant Databases
+To restore the Qdrant databases, ensure that the snapshot files (unzipped) are placed here and run the following command.
+```
+conda activate MapleEmbedder2
+python restore_qdrant.py
+```
+
 ## Inference
 
 ### Preprocessing Raw mzXML Files
