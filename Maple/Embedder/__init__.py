@@ -13,7 +13,7 @@ load_dotenv(dotenv_path)
 # inference functions
 
 
-def run_MS1Former(peaks_fp: str, output_fp: str):
+def run_MS1Former_on_mzXML(peaks_fp: str, output_fp: str):
     from Maple.Embedder.inference.MS1Pipeline import MS1Pipeline
 
     pipe = MS1Pipeline(gpu_id=0)

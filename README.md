@@ -38,7 +38,7 @@ The preprocessing pipeline consists of the following steps:
 from Maple.PeakPicker import run_peak_picker
 
 run_peak_picker(
-    mzXML_fp="sample_data/20109_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C12_1.mzXML",
+    mzXML_fp="sample_data/20109_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C12_1.mzXML", # input data
     output_fp="sample_output/20109_peaks.json"
 )
 ```
@@ -72,8 +72,8 @@ MAPLE includes inference functions for analyzing isotope feeding experiments by 
 from Maple.FeedingAnalysis import run_feeding_analysis
 
 run_feeding_analysis(
-    c13_mzXML_fp="sample_data/20111_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C13_1.mzXML",
-    c12_peaks_fp="sample_output/20109_peaks.json",
+    c13_mzXML_fp="sample_data/20111_Chitinophaga__C408L_Czapek-Dox-1perstarch_HP20-XAD7bags_C13_1.mzXML", # input data
+    c12_peaks_fp="sample_output/20109_peaks.json", # input data
     output_fp="sample_output/20111_feeding_results.json"
 )
 ```
@@ -104,7 +104,7 @@ MAPLE computes theoretical fragmentation trees using a curated set of chemical r
 from Maple.Fragmenter import run_ms2_fragmenter
 
 run_ms2_fragmenter(
-    smiles="CNC[C@H](O)C1=CC=C(O)C(O)=C1",
+    smiles="CNC[C@H](O)C1=CC=C(O)C(O)=C1", # input data
     output_fp="sample_output/example_insilico_fragmentation.json"
 )
 ```
@@ -117,8 +117,8 @@ Run the following code to compute a global spectral embedding and individual MS<
 ```python
 from Maple.Embedder import run_MS1Former
 
-run_MS1Former(
-    peaks_fp="sample_output/20109_peaks.json",
+run_MS1Former_on_mzXML(
+    peaks_fp="sample_output/20109_peaks.json", # input data
     output_fp="sample_output/example_MS1Former_output.pkl"
 )
 ```
@@ -129,8 +129,8 @@ After generating MS<sup>1</sup> embeddings, run the following command to compute
 from Maple.Embedder import annotate_mzXML_with_tax_scores
 
 annotate_mzxml_with_tax_scores(
-    peaks_fp="sample_output/20109_peaks.json",
-    ms1_emb_fp="sample_output/example_MS1Former_output.pkl",
+    peaks_fp="sample_output/20109_peaks.json", # input data
+    ms1_emb_fp="sample_output/example_MS1Former_output.pkl", # input data
     output_fp="sample_output/example_MS1Former_taxscores.csv",
     query_phylum="bacteroidetes",
     query_class="sphingobacteriia",
@@ -139,3 +139,7 @@ annotate_mzxml_with_tax_scores(
     query_genus="chitinophaga",
 )
 ```
+
+### Embedding MS<sup>2</sup> Signals
+
+MAPLE generates two embeddings for fragmentation data. The chemotype embedding is optimized for ANN classification to determine biosynthetic class. The analog embedding is useful for density based clustering to determine derivatives (optimized for replicating molecular similarity within biosynthetic classes)
