@@ -16,8 +16,19 @@ Conda environment for peak picking (e.g., adduct analysis, molecular formula pre
     conda activate MaplePeakPicker
     pip install -e .
 ```
+Conda environment for in silico MS2 fragmentation
+```
+    conda env create -f envs/MapleFragmenter.yml
+    conda activate MapleFragmenter
+    pip install -e .
+```
 
-Repeat the process to create the conda environments required for _in silico_ MS<sup>2</sup> fragmentation and for embedding MS<sup>1</sup>/MS<sup>2</sup> data using `envs/MapleFragmenter.yml` and `envs/MapleEmbedder.yml`, respectively.
+Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
+```
+    conda env create -f envs/MapleEmbedder2.yml
+    conda activate MapleEmbedder2
+    pip install -e .
+```
 
 2. Set Up Qdrant
     - Install Qdrant and restore the Qdrant reference databases from the provided snapshots. Look under **Qdrant Setup** for more details.
