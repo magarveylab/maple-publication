@@ -1,7 +1,7 @@
 import json
 import os
 import pickle
-from typing import Literal, Optional
+from typing import List, Literal, Optional
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -159,4 +159,34 @@ def annotate_mzXML_with_chemotypes(
                 "distance": prop["distance"],
             }
         )
+    pd.DataFrame(out).to_csv(output_fp, index=False)
+
+
+def compute_ms2_networks_from_mzXMLs(
+    ms2_emb_fps: List[str],
+    output_fp: str,
+):
+    from Maple.Embedder.clustering.clustering import compute_clustering
+
+    # prepare input data
+    keys = []
+    matrix = []
+    for ms2_emb_fp in ms2_emb_fps:
+        source = ms2_emb_fp.split("/")[-1]
+        emb_result = pickle.load(open(ms2_emb_fp, "rb"))
+        for r in emb_result:
+            keys.append({"source": source, "peak_id": r["peak_id"]})
+            matrix.append(r["embedding"])
+    # density based clustering
+    out = compute_clustering(
+        matrix=matrix,
+        matrix_keys=keys,
+    )
+    # remove -1 family id
+    next_family_id = max([i["family_id"] for i in out]) + 1
+    for i in out:
+        if i["family_id"] == -1:
+            i["family_id"] = next_family_id
+            next_family_id += 1
+    # save output
     pd.DataFrame(out).to_csv(output_fp, index=False)
