@@ -35,7 +35,7 @@ Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
 
 ## Supplementary Package Installation for Genomic and Molecular Analysis
 
-### Supplementary Package Installation for Genomic and Molecular Analysis
+The following packages were used to support various analysis including strain prioritization, computation of the polyketide molecular universe, and large-scale analysis of encoded metabolite landscapes. Outputs are integrated with metabolite-level analyses for comprehensive multi-omic interpretation.
 
 | Package | Description | Publication Link
 |---|---| ---|
