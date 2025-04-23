@@ -1,5 +1,5 @@
 # maple-publication
-MAPLE package for external use (released with publication)
+Metabolome-genome Alignment and Predictive Learning Engine (MAPLE)
 
 ## Overview
 MAPLE is an AI-driven framework designed to integrate LC-MS/MS metabolomic profiles with bacterial genomic data for targeted metabolite discovery. This repository contains the full implementation of MAPLE, including data preprocessing, inference pipelines and model training.
@@ -32,6 +32,16 @@ Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
 
 2. Set Up Qdrant
     - Install Qdrant and restore the Qdrant reference databases from the provided snapshots. Look under **Qdrant Setup** for more details.
+
+## Supplementary Package Installation for Genomic and Molecular Analysis
+
+### Supplementary Package Installation for Genomic and Molecular Analysis
+
+| Package | Description | Publication Link
+|---|---| ---|
+| [IBIS](https://github.com/magarveylab/ibis-publication/tree/main)          | Integrated Biosynthetic Inference Suite (IBIS) - AI-based platform for high-throughput identification and comparison of bacterial metabolism from genomic data   | [Here](https://www.pnas.org/doi/10.1073/pnas.2425048122) | 
+| [BLOOM](https://github.com/magarveylab/bloom-publication/tree/main)         | Biosynthetic Learning from Ontological Organizations of Metabolism (BLOOM) - Chemoinformatics platform for biosynthetic pathway inference from molecular structures via substructure matching. Utilizes AI-based embeddings for organizing metabolites within a biosynthetic ontology, and incorporates knowledge graph reasoning to associate BGCs with molecules. |  In Review | 
+
 
 ## Qdrant Setup 
 MAPLE inference piplelines utilize [Qdrant](https://qdrant.tech/) embedding databases for approximate nearest neighbor (ANN) lookups. Since system configurations may vary, we recommend setting up Qdrant locally using a Docker container, following the [official documentation](https://qdrant.tech/documentation/quickstart/).
