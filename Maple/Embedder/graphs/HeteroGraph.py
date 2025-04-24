@@ -177,7 +177,7 @@ class HeteroGraph:
         word_vocab: WordVocab = {},
         node_label_class_dict: Dict[Label, dict] = {},
         apply_edge_attr: bool = True,
-        apply_multigraph_wrapper: bool = True,
+        apply_multigraph_wrapper: bool = False,
         node_types_to_consider: Optional[List[NodeType]] = None,
         edge_types_to_consider: Optional[List[EdgeType]] = None,
     ):
@@ -296,7 +296,13 @@ class HeteroGraph:
             data[n1_name, edge_name, n2_name].edge_type = torch.LongTensor(
                 [[et_idx]] * edge_count
             )
-        return data
+        if apply_multigraph_wrapper:
+            # only necessary during training
+            from omnicons.data.DataClass import MultiInputData
+
+            return MultiInputData(graphs={"a": data})
+        else:
+            return data
 
 
 ############################################################
