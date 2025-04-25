@@ -9,8 +9,8 @@ from Maple.Embedder.Qdrant.QdrantBase import QdrantBase, batchify
 class MS1FullCollection(QdrantBase):
     def __init__(self, delete_existing: int = False):
         super().__init__(
-            collection_name="ms1_collection",
-            memory_strategy="memory",
+            collection_name="ms1_full_collection",
+            memory_strategy="disk",
             label_alias="peak_id",
             embedding_dim=128,
             memmap_threshold=None,
