@@ -151,7 +151,7 @@ MAPLE generates embeddings that capture contextual relationships between co-elut
 Run the following code to compute a global spectral embedding and individual MS<sup>1</sup> embeddings for a given mzXML file. Note: mzXML files must first be processed using the peak picking module.
 
 ```python
-from Maple.Embedder import run_MS1Former
+from Maple.Embedder import run_MS1Former_on_mzXML
 
 run_MS1Former_on_mzXML(
     peaks_fp="sample_output/20109_peaks.json", # input data
@@ -165,7 +165,7 @@ After generating MS<sup>1</sup> embeddings, run the following command to compute
 ```python
 from Maple.Embedder import annotate_mzXML_with_tax_scores
 
-annotate_mzxml_with_tax_scores(
+annotate_mzXML_with_tax_scores(
     peaks_fp="sample_output/20109_peaks.json", # input data
     ms1_emb_fp="sample_output/20109_MS1Former_embeddings.pkl", # input data
     output_fp="sample_output/20109_MS1Former_taxscores.csv",

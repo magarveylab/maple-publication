@@ -1,16 +1,50 @@
-from Maple.Embedder.Qdrant.QdrantBase import QdrantBase
+import pickle
+from glob import glob
+
+from tqdm import tqdm
+
+from Maple.Embedder.Qdrant.QdrantBase import QdrantBase, batchify
 
 
 class MS1FullCollection(QdrantBase):
-    def __init__(self):
+    def __init__(self, delete_existing: int = False):
         super().__init__(
-            collection_name="ms1_full_collection",
+            collection_name="ms1_collection",
             memory_strategy="memory",
             label_alias="peak_id",
             embedding_dim=128,
             memmap_threshold=None,
-            delete_existing=False,
+            delete_existing=delete_existing,
         )
+
+    def initial_upload(self, embedding_dir: str):
+        filenames = glob(f"{embedding_dir}/*.pkl")
+        for fp in tqdm(filenames, desc="Uploading MS1 embeddings"):
+            peaks = pickle.load(open(fp, "rb"))
+            batches = batchify(peaks, bs=1000)
+            for batch in tqdm(batches):
+                ids = []
+                vectors = []
+                payloads = []
+                for peak in batch:
+                    peak_id = peak["ms1_peak_id"]
+                    embedding = peak["embedding"]
+                    ids.append(peak_id)
+                    vectors.append(embedding)
+                    payloads.append(
+                        {
+                            "mass": peak["mass"],
+                            "rt": peak["rt"],
+                            "intensity": peak["intensity"],
+                            "adduct_type": peak["adduct_type"],
+                            "mzml_id": peak["mzml_id"],
+                            "strain_id": peak["strain_id"],
+                        }
+                    )
+                self.upload_data_batch(
+                    ids=ids, vectors=vectors, payloads=payloads
+                )
+        self.index_collection()
 
 
 class MS2Reference(QdrantBase):
