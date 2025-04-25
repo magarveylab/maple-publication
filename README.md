@@ -120,7 +120,7 @@ from Maple.FeedingAnalysis import get_isot_dist_skewness
 
 iso_mz = [937.684, 938.687, 939.689, 940.694, 941.694]
 iso_intens = [1, 0.558, 0.188, 0.046, 0.009]
-skew = iso_dist_skewness(iso_mz=iso_mz, iso_intens=iso_intens)
+skew = get_iso_dist_skewness(iso_mz=iso_mz, iso_intens=iso_intens)
 
 ```
 
