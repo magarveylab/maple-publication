@@ -2,12 +2,13 @@ import os
 from glob import glob
 
 import requests
+from tqdm import tqdm
 
 from Maple.Embedder import curdir
 
 node_url = "http://localhost:6333"
 local_snapshot_paths = glob(f"{curdir}/QdrantSnapshots/*.snapshot")
-for snapshot_path in local_snapshot_paths:
+for snapshot_path in tqdm(local_snapshot_paths):
     snapshot_name = os.path.basename(snapshot_path)
     collection_name = snapshot_name.split("-")[0]
     requests.post(

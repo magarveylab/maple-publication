@@ -15,7 +15,9 @@ def run_formula_predictor(peaks: list, output_fp: str, cpu: int = 10):
     from Maple.PeakPicker.FormulaAnalysis import FormulaAnalysis
 
     formula_analysis = FormulaAnalysis(peaks, cores=cpu)
-    response = formula_analysis.get_predictions()
+    formula_analysis.predict_elemental_ratios()
+    formula_analysis.predict_formulas()
+    response = formula_analysis.predictions
     out = []
     for peak_id, formulas_raw in response.items():
         formulas = [{"formula": f[0], "score": f[1]} for f in formulas_raw]
