@@ -37,7 +37,7 @@ For Cuda:12
     pip install -e .
 ```
 
-2. Download the necessary data from the accompanying Zenodo repository. 
+2. Download the necessary data from the accompanying [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.15285195). 
 
 3. Set Up Qdrant
     - Install Qdrant and restore the Qdrant reference databases from the provided snapshots. Look under **Qdrant Setup** for more details.
