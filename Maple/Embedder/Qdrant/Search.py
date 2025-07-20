@@ -26,6 +26,7 @@ def ppm_lower_end(M, ppm):
 
 def get_related_peaks_by_ms1(
     peak_queries: List[ms1PeakQuery],
+    use_cloud_service: bool = True,
     qdrant_db: QdrantBase = Databases.MS1FullCollection,
     top_n: int = 100,
     batch_size: int = 1000,
@@ -70,7 +71,7 @@ def get_related_peaks_by_ms1(
             }
         )
     # Initialize Qdrant Database
-    db = qdrant_db()
+    db = qdrant_db(use_cloud_service=use_cloud_service)
     predictions = db.batch_search(
         queries=query_list,
         batch_size=batch_size,

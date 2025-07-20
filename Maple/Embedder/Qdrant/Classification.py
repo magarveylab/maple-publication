@@ -72,6 +72,7 @@ def neighborhood_classification(
 def KNNClassification(
     query_list: List[DataQuery],
     qdrant_db: QdrantBase = None,
+    use_cloud_service: bool = True,
     classification_method: Callable = None,
     top_n: int = 1,
     dist_cutoff: float = 500.0,  # arbitrarily large.
@@ -82,7 +83,7 @@ def KNNClassification(
     batch_size: int = 1000,
 ) -> Dict[int, KnnOutput]:
     # Initialize Qdrant Database
-    db = qdrant_db()
+    db = qdrant_db(use_cloud_service=use_cloud_service)
     # run KNN
     predictions = db.batch_search(
         queries=query_list,
@@ -118,6 +119,7 @@ def KNNClassification(
 ms2_chemotype_classification = partial(
     KNNClassification,
     qdrant_db=Databases.MS2Reference,
+    use_cloud_service=True,
     classification_method=neighborhood_classification,
     top_n=10,
     dist_cutoff=None,

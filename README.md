@@ -52,8 +52,8 @@ The following packages were used to support various analysis including strain pr
 | [BLOOM](https://github.com/magarveylab/bloom-publication/tree/main)         | Biosynthetic Learning from Ontological Organizations of Metabolism (BLOOM) - Chemoinformatics platform for biosynthetic pathway inference from molecular structures via substructure matching. Utilizes AI-based embeddings for organizing metabolites within a biosynthetic ontology, and incorporates knowledge graph reasoning to associate BGCs with molecules. |  In Review | 
 
 
-## Qdrant Setup 
-MAPLE inference piplelines utilize [Qdrant](https://qdrant.tech/) embedding databases for approximate nearest neighbor (ANN) lookups. Since system configurations may vary, we recommend setting up Qdrant locally using a Docker container, following the [official documentation](https://qdrant.tech/documentation/quickstart/).
+## Qdrant Setup
+MAPLE inference piplelines utilize [Qdrant](https://qdrant.tech/) embedding databases for approximate nearest neighbor (ANN) lookups. We provide a hosted cloud service for vector similarity searches. However, in the event of downtime or for local deployment, Qdrant can be easily run in a Docker container by following the the [official quickstart guide](https://qdrant.tech/documentation/quickstart/).
 
 ### Restoring Qdrant Databases
 To restore the Qdrant databases, download and extract `QdrantSnapshots.yml` and place the contents in [this directory](https://github.com/magarveylab/maple-publication/tree/main/Maple/Embedder/QdrantSnapshots). Since the MS1-Qdrant database is too large to store directly, you will need to recreate it from the raw embeddings `ms1_embeddings.zip`. Run the following command to do so. The script requires approximately 12 GB of memory and takes about 1 hour to complete. This step is only necessary for Qdrant-related functions: `annotate_mzXML_with_chemotypes` and  `annotate_mzXML_with_tax_scores`.

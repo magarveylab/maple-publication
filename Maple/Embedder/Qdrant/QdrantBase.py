@@ -4,7 +4,6 @@ from typing import Any, Dict, List, Literal, TypedDict, Union
 
 import numpy as np
 import pandas as pd
-from dotenv import find_dotenv, get_key
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 from qdrant_client.http.models import CollectionStatus, Filter, SearchRequest
@@ -71,17 +70,20 @@ class QdrantBase:
         memory_strategy: Literal["disk", "memory", "hybrid"] = None,
         memmap_threshold: int = None,
         delete_existing: bool = False,
-        client: QdrantClient = None,
+        use_cloud_service: bool = True,
         **kwargs,
     ):
-        if client is None:
-            self.client = QdrantClient(
-                host=get_key(find_dotenv(), "QDRANT_HOST"),
-                port=get_key(find_dotenv(), "QDRANT_PORT"),
-                timeout=300,
-            )
+        if use_cloud_service:
+            qdrant_host = "34.66.123.176"
+            qdrant_port = 6333
         else:
-            self.client = client
+            qdrant_host = "localhost"
+            qdrant_port = 6333
+        self.client = QdrantClient(
+            host=qdrant_host,
+            port=qdrant_port,
+            timeout=300,
+        )
         self.collection_name = collection_name
         self.embedding_dim = embedding_dim
         self.label_alias = label_alias

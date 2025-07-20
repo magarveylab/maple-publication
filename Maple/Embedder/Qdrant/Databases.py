@@ -7,7 +7,9 @@ from Maple.Embedder.Qdrant.QdrantBase import QdrantBase, batchify
 
 
 class MS1FullCollection(QdrantBase):
-    def __init__(self, delete_existing: int = False):
+    def __init__(
+        self, use_cloud_service: bool = True, delete_existing: int = False
+    ):
         super().__init__(
             collection_name="ms1_full_collection",
             memory_strategy="disk",
@@ -15,6 +17,7 @@ class MS1FullCollection(QdrantBase):
             embedding_dim=128,
             memmap_threshold=None,
             delete_existing=delete_existing,
+            use_cloud_service=use_cloud_service,
         )
 
     def initial_upload(self, embedding_dir: str):
@@ -48,7 +51,7 @@ class MS1FullCollection(QdrantBase):
 
 
 class MS2Reference(QdrantBase):
-    def __init__(self):
+    def __init__(self, use_cloud_service: bool = True):
         super().__init__(
             collection_name="ms2_chemotype_reference",
             memory_strategy="disk",
@@ -56,4 +59,5 @@ class MS2Reference(QdrantBase):
             embedding_dim=128,
             memmap_threshold=20000,
             delete_existing=False,
+            use_cloud_service=use_cloud_service,
         )
