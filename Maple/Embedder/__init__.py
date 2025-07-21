@@ -28,11 +28,13 @@ def annotate_mzXML_with_tax_scores(
     peaks_fp: str,  # from peak picking module
     ms1_emb_fp: str,  # from MS1Pipeline
     output_fp: str,
+    peak_ids: Optional[List[int]] = None,
     query_phylum: Optional[str] = None,
     query_class: Optional[str] = None,
     query_order: Optional[str] = None,
     query_family: Optional[str] = None,
     query_genus: Optional[str] = None,
+    use_cloud_service: bool = True,
 ):
     from Maple.Embedder.Qdrant.Search import get_related_peaks_by_ms1
     from Maple.Embedder.Qdrant.TaxScore import get_tax_score_from_search_result
@@ -44,20 +46,26 @@ def annotate_mzXML_with_tax_scores(
     # prepare input data
     input_data = []
     for peak in peaks:
-        peak_id = peak["peak_id"]
+        peak_id = int(peak["peak_id"])
         adduct_type = peak["adduct_type"]
         if adduct_type in ["MpH", "Mp2H", "Mp3H"]:
+            if isinstance(peak_ids, list) and peak_id not in peak_ids:
+                continue
             input_data.append(
                 {
-                    "peak_id": int(peak["peak_id"]),
+                    "peak_id": peak_id,
                     "embedding": emb_lookup[peak_id],
                     "mass": peak["monoisotopic_mass"],
                     "rt": peak["rt"],
                     "adduct_type": adduct_type,
                 }
             )
-    # get related peaks
-    all_search_results = get_related_peaks_by_ms1(peak_queries=input_data)
+    # get related peaksmit to 1000 for performance
+    all_search_results = get_related_peaks_by_ms1(
+        peak_queries=input_data,
+        batch_size=1,
+        use_cloud_service=use_cloud_service,
+    )
     out = []
     for search_result in all_search_results:
         # get tax scores

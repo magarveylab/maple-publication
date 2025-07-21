@@ -23,8 +23,8 @@ peak_id,label,homology,distance
 1155988,Alkaloid,0.9,7.52
 1467316,NonRibosomalPeptide,0.5,9.677
 123827,Aminoglycoside,0.9,9.929
-1156092,TypeIPolyketide,0.8,11.668
 1336316,TypeIPolyketide,0.8,6.423
+1156092,TypeIPolyketide,0.8,11.668
 214062,TypeIIPolyketide,0.8,11.714
 1197185,TypeIPolyketide,0.8,8.684
 1254542,TypeIPolyketide,0.6,9.508
@@ -49,8 +49,8 @@ peak_id,label,homology,distance
 1181969,TypeIPolyketide,0.8,7.4
 1337679,TypeIPolyketide,0.8,8.515
 1362323,TypeIPolyketide,0.6,6.635
-838058,NonRibosomalPeptide,0.9,9.151
 1288618,TypeIPolyketide,0.5,7.515
+838058,NonRibosomalPeptide,0.9,9.151
 108991,Alkaloid,0.9,4.312
 1190385,TypeIPolyketide,0.6,10.843
 1337846,TypeIPolyketide,0.8,8.896
@@ -75,8 +75,8 @@ peak_id,label,homology,distance
 1216141,TypeIPolyketide,0.8,8.255
 806693,Alkaloid,0.6,9.284
 1216320,TypeIPolyketide,0.9,9.19
-683931,NonRibosomalPeptide,0.4,11.465
 683932,TypeIPolyketide,0.4,15.818
+683931,NonRibosomalPeptide,0.4,11.465
 1151506,Alkaloid,0.9,7.318
 1151514,TypeIPolyketide,0.6,9.252
 676398,TypeIPolyketide,0.6,11.621
@@ -138,9 +138,9 @@ peak_id,label,homology,distance
 679158,NonRibosomalPeptide,0.6,10.611
 1334524,TypeIPolyketide,0.6,9.482
 1269021,NonRibosomalPeptide,0.6,8.727
-1178971,TypeIIPolyketide,0.8,14.48
 777568,NonRibosomalPeptide,1.0,4.701
 777569,NonRibosomalPeptide,0.9,4.359
+1178971,TypeIIPolyketide,0.8,14.48
 1154476,TypeIPolyketide,0.6,6.575
 1236490,TypeIPolyketide,0.8,10.349
 1310224,TypeIPolyketide,0.7,8.448
