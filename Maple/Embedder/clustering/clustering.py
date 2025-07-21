@@ -20,6 +20,7 @@ def run_umap(
         n_components=n_components,
         n_epochs=n_epochs,
         min_dist=min_dist,
+        random_state=12,
     )
     embedding = reducer.fit_transform(matrix)
     end = time.time()
