@@ -16,6 +16,7 @@ Conda environment for peak picking (e.g., adduct analysis, molecular formula pre
     conda activate MaplePeakPicker
     pip install -e .
 ```
+
 Conda environment for in silico MS2 fragmentation
 ```
     conda env create -f envs/MapleFragmenter.yml
@@ -24,17 +25,19 @@ Conda environment for in silico MS2 fragmentation
 ```
 
 Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
-For Cuda:11
 ```
-    conda env create -f envs/MapleEmbedder-cu11.7.yml
-    conda activate MapleEmbedder-cu11.7
+    conda env create -f envs/MapleDL.yml
+    conda activate MapleDL
     pip install -e .
 ```
-For Cuda:12
+To create a `MapleDL` from sratch
 ```
-    conda env create -f envs/MapleEmbedder-cuda12.yml
-    conda activate MapleEmbedder-cuda12
-    pip install -e .
+pip3 install qdrant_client
+pip3 install torch torchvision torchaudio
+pip install torch_geometric
+pip3 install pandas
+pip install hdbscan
+pip install umap-learn
 ```
 
 2. Download the necessary data from the accompanying [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.15285195). 
@@ -64,3 +67,12 @@ python restore_qdrant.py -ms1_embedding_dir ms1_embedding.zip
 
 ## Graphormer Training
 Training scripts for both MS1Former and MS2Former are [provided](https://github.com/magarveylab/maple-graphormer-training/tree/main) to support model development, pretraining, and task-specific fine-tuning.
+
+## Inference
+Refer to the Jupyter notebooks below for example inference workflows that can be adapted to your own data:
+
+1. Peak-Picking-Modules.ipynb
+2. Insilico-Fragmentation-Modules.ipynb
+3. MS-Embedding-Modules.ipynb
+
+
