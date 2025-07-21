@@ -1,22 +1,23 @@
-import json
-import os
-import pickle
 from typing import List, Literal, Optional
 
-import numpy as np
-import pandas as pd
-from dotenv import load_dotenv
-from tqdm import tqdm
 
-curdir = os.path.abspath(os.path.dirname(__file__))
-dotenv_path = os.path.join(curdir, ".env")
-load_dotenv(dotenv_path)
+def load_env():
+    import os
 
-# inference functions
+    from dotenv import load_dotenv
+
+    curdir = os.path.abspath(os.path.dirname(__file__))
+    dotenv_path = os.path.join(curdir, ".env")
+    load_dotenv(dotenv_path)
 
 
 def run_MS1Former_on_mzXML(peaks_fp: str, output_fp: str, gpu_id: int = 0):
+    import json
+    import pickle
+
     from Maple.Embedder.inference.MS1Pipeline import MS1Pipeline
+
+    load_env()
 
     pipe = MS1Pipeline(gpu_id=gpu_id)
     ms1_peaks = json.load(open(peaks_fp))
@@ -36,8 +37,15 @@ def annotate_mzXML_with_tax_scores(
     query_genus: Optional[str] = None,
     use_cloud_service: bool = True,
 ):
+    import json
+    import pickle
+
+    import pandas as pd
+
     from Maple.Embedder.Qdrant.Search import get_related_peaks_by_ms1
     from Maple.Embedder.Qdrant.TaxScore import get_tax_score_from_search_result
+
+    load_env()
 
     # load peaks
     peaks = json.load(open(peaks_fp, "r"))
@@ -96,10 +104,17 @@ def run_MS2Former_on_mzXML(
     gpu_id: int = 0,
     min_ms2: int = 5,
 ):
+    import json
+    import pickle
+
+    from tqdm import tqdm
+
     from Maple.Embedder.inference.MS2Pipeline import (
         AnalogMS2Pipeline,
         ChemotypeMS2Pipeline,
     )
+
+    load_env()
 
     # load appropriate ingerence pipeline
     if embedding_type == "chemotype":
@@ -139,9 +154,15 @@ def annotate_mzXML_with_chemotypes(
     gpu_id: int = 0,
     min_ms2: int = 5,
 ):
+    import pickle
+
+    import pandas as pd
+
     from Maple.Embedder.Qdrant.Classification import (
         ms2_chemotype_classification,
     )
+
+    load_env()
 
     if peaks_fp is not None:
         emb_result = run_MS2Former_on_mzXML(
@@ -177,6 +198,11 @@ def compute_ms2_networks_from_mzXMLs(
     n_neighbors: int = 15,
     min_cluster_size: int = 5,
 ):
+    import pickle
+
+    import numpy as np
+    import pandas as pd
+
     from Maple.Embedder.clustering.clustering import compute_clustering
 
     # prepare input data

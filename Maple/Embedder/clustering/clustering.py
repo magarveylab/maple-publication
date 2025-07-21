@@ -10,12 +10,16 @@ def run_umap(
     n_neighbors: int = 15,
     n_epochs: int = 500,
     min_dist=0.1,
+    use_rapidsai: bool = False,
 ):
-    import cuml
+    if use_rapidsai:
+        from cuml import UMAP
+    else:
+        from umap import UMAP
 
     print("Running Dimension Reduction ...")
     start = time.time()
-    reducer = cuml.UMAP(
+    reducer = UMAP(
         n_neighbors=n_neighbors,
         n_components=n_components,
         n_epochs=n_epochs,
@@ -34,12 +38,16 @@ def run_hdbscan(
     matrix_keys: List[dict],
     min_cluster_size: int = 5,
     metric: str = "euclidean",
+    use_rapidsai: bool = False,
 ):
-    import cuml
+    if use_rapidsai:
+        from cuml.cluster.hdbscan import HDBSCAN
+    else:
+        from hdbscan import HDBSCAN
 
     print("Running Soft Clustering ...")
     start = time.time()
-    clusterer = cuml.cluster.hdbscan.HDBSCAN(
+    clusterer = HDBSCAN(
         min_cluster_size=min_cluster_size,
         metric=metric,
         prediction_data=True,
@@ -66,6 +74,7 @@ def compute_clustering(
     min_dist=0.1,
     min_cluster_size: int = 5,
     metric: str = "euclidean",
+    use_rapidsai: bool = False,
 ):
 
     # run umap
@@ -75,6 +84,7 @@ def compute_clustering(
         n_neighbors=n_neighbors,
         n_epochs=n_epochs,
         min_dist=min_dist,
+        use_rapidsai=use_rapidsai,
     )
     # run soft clustering with hdbscan
     return run_hdbscan(
@@ -82,4 +92,5 @@ def compute_clustering(
         matrix_keys=matrix_keys,
         min_cluster_size=min_cluster_size,
         metric=metric,
+        use_rapidsai=use_rapidsai,
     )
