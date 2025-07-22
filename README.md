@@ -4,7 +4,61 @@ Metabolome-genome Alignment and Predictive Learning Engine (MAPLE)
 ## Overview
 MAPLE is an AI-driven framework designed to integrate LC-MS/MS metabolomic profiles with bacterial genomic data for targeted metabolite discovery. This repository contains the full implementation of MAPLE, including data preprocessing, inference pipelines and model training.
 
-## Installation
+## System Requirements
+
+### Hardware Requirements
+
+This system was developed and tested on a high-performance server with the following configuration:
+
+- Dual Intel Gold 5218 CPUs @ 2.30GHz
+
+- 8× NVIDIA Quadro RTX 5000 GPUs (16 GiB VRAM each)
+
+- 250 GiB DDR4 RAM
+
+- Ubuntu Linux 20.04
+
+However, the software can be run on any modern Linux system equipped with an NVIDIA GPU that supports CUDA 12 or higher. Performance will scale with available GPU memory and compute capacity.
+
+## Software Requirements
+
+- Linux (Ubuntu 20.04 or compatible)
+
+- NVIDIA GPU with CUDA 12+
+
+- Conda (recommended for environment management)
+
+
+## Conda Installation
+
+Different modules in this package require different Python versions. To ensure compatibility, we provide dedicated Conda environments for each MAPLE module.
+
+### Installation via Pip Symlinks:
+
+1. Create and activate the appropriate Conda environment for each MAPLE module.
+
+2. Then, install the package in editable mode using pip:
+
+Conda environment for peak picking (e.g., adduct analysis, molecular formula prediction) and <sup>13</sup>C isotope feeding analysis 
+```
+    conda env create -f envs/MaplePeakPicker.yml
+    conda activate MaplePeakPicker
+    pip install -e .
+```
+
+Conda environment for in silico MS2 fragmentation
+```
+    conda env create -f envs/MapleFragmenter.yml
+    conda activate MapleFragmenter
+    pip install -e .
+```
+
+Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
+```
+    conda env create -f envs/MapleDL.yml
+    conda activate MapleDL
+    pip install -e .
+```
 
 ### Inference-Only Installation
 1. Install the Package via Pip Symlinks:
