@@ -30,15 +30,6 @@ Conda environment for embedding MS<sup>1</sup>/MS<sup>2</sup> data
     conda activate MapleDL
     pip install -e .
 ```
-To create a `MapleDL` from sratch
-```
-pip3 install qdrant_client
-pip3 install torch torchvision torchaudio
-pip install torch_geometric
-pip3 install pandas
-pip install hdbscan
-pip install umap-learn
-```
 
 2. Download the necessary data from the accompanying [Zenodo repository](https://zenodo.org/doi/10.5281/zenodo.15285195). 
 
@@ -61,7 +52,7 @@ MAPLE inference piplelines utilize [Qdrant](https://qdrant.tech/) embedding data
 ### Restoring Qdrant Databases
 To restore the Qdrant databases, download and extract `QdrantSnapshots.yml` and place the contents in [this directory](https://github.com/magarveylab/maple-publication/tree/main/Maple/Embedder/QdrantSnapshots). Since the MS1-Qdrant database is too large to store directly, you will need to recreate it from the raw embeddings `ms1_embeddings.zip`. Run the following command to do so. The script requires approximately 12 GB of memory and takes about 1 hour to complete. This step is only necessary for Qdrant-related functions: `annotate_mzXML_with_chemotypes` and  `annotate_mzXML_with_tax_scores`.
 ```
-conda activate MapleEmbedder-cu11.7
+conda activate MapleDL
 python restore_qdrant.py -ms1_embedding_dir ms1_embedding.zip
 ```
 
