@@ -186,6 +186,7 @@ def compute_ms2_networks_from_mzXMLs(
     output_fp: str,
     n_neighbors: int = 15,
     min_cluster_size: int = 5,
+    use_rapidsai: bool = False,
 ):
     import pickle
 
@@ -210,6 +211,7 @@ def compute_ms2_networks_from_mzXMLs(
         matrix_keys=keys,
         min_cluster_size=min_cluster_size,
         n_neighbors=n_neighbors,
+        use_rapidsai=use_rapidsai,
     )
     # remove -1 family id
     next_family_id = max([i["family_id"] for i in out]) + 1
