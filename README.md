@@ -20,7 +20,7 @@ This system was developed and tested on a high-performance server with the follo
 
 However, the software can be run on any modern Linux system equipped with an NVIDIA GPU that supports CUDA 12 or higher. Performance will scale with available GPU memory and compute capacity.
 
-## Software Requirements
+### Software Requirements
 
 - Linux (Ubuntu 20.04 or compatible)
 
@@ -29,11 +29,11 @@ However, the software can be run on any modern Linux system equipped with an NVI
 - Conda (recommended for environment management)
 
 
-## Conda Installation
+### Conda Installation
 
 Different modules in this package require different Python versions. To ensure compatibility, we provide dedicated Conda environments for each MAPLE module.
 
-### Installation via Pip Symlinks:
+#### Installation via Pip Symlinks:
 
 1. Create and activate the appropriate Conda environment for each MAPLE module.
 
